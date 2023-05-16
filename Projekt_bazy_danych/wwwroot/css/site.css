@@ -81,3 +81,24 @@ td {
         background-color: #0069d9;
         border-color: #0062cc;
     }
+
+
+.navbar {
+    background-color: black; /* Ustaw kolor t³a na czarny */
+}
+
+.navbar-nav .nav-item .nav-link {
+    position: relative; /* Ustaw pozycjê wzglêdem rodzica */
+    color: lightseagreen; /* Zmieñ kolor napisów na bia³y */
+}
+
+    .navbar-nav .nav-item .nav-link:hover::before {
+        content: "";
+        position: absolute;
+        left: -5px; /* Ustaw odstêp obwódki od tekstu */
+        top: -5px;
+        right: -5px;
+        bottom: -5px;
+        border: 2px solid lightseagreen; /* Ustaw kolor zielonej obwódki */
+        border-radius: 5px; /* Zaokr¹glij rogi obwódki */
+    }

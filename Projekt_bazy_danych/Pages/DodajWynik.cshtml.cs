@@ -20,10 +20,6 @@ namespace bazy.Pages
             _context = context;
         }
 
-        //public IActionResult OnGet()
-        //{
-        //    return Page();
-        //}
 
         [BindProperty]
         public Zawodnik Zawodnik { get; set; } = default!;
@@ -35,38 +31,54 @@ namespace bazy.Pages
 
         public Wyniki Wyniki { get; set; } = new Wyniki();
 
+        public List<Wyniki> WynikiZawodnicy { get; set; }
+        public List<Miejscowosci> ListaMiejscowosci { get; set; }
+
+        public async Task<IActionResult> OnGetAsync()
+        {
+            await LoadData();
+            return Page();
+        }
+
+
         public async Task OnPostAsync()
         {
-            var dbContext = new ZawodnikDbContext();
-
+            await LoadData();
 
             // Nie ma takiej osoby
-            if (dbContext.Zawodnicy.Where(o => o.imie_zawodnika == Zawodnik.imie_zawodnika && o.nazwisko_zawodnika == Zawodnik.nazwisko_zawodnika).Count() == 0)
+            if (_context.Zawodnicy.Where(o => o.imie_zawodnika == Zawodnik.imie_zawodnika && o.nazwisko_zawodnika == Zawodnik.nazwisko_zawodnika).Count() == 0)
             {
                 ViewData["Message"] = $"Nie znaleziono osoby o imieniu {Zawodnik.imie_zawodnika} {Zawodnik.nazwisko_zawodnika}.";
+                return;
             }
 
             // Nie ma takiej miejscowosci zawodów
-            if (dbContext.Miejscowosci.Where(o => o.nazwa_miejscowosci == Miejscowosc.nazwa_miejscowosci).Count() == 0)
+            if (_context.Miejscowosci.Where(o => o.nazwa_miejscowosci == Miejscowosc.nazwa_miejscowosci).Count() == 0)
             {
                 ViewData["Message"] = $"Nie znaleziono miejscowosci {Miejscowosc.nazwa_miejscowosci}.";
+                return;
             }
+
+            //Sprawdzenie, czy zawodnik ma już wpisany wynik w danej miejscowosci
+            //if (_context.Wyniki.Where(o => o.idzawodnicy == Zawodnik.idzawodnicy).Count() != 0 && _context.Wyniki.Where(o => o.idmiejscowosci == Miejscowosc.idmiejscowosci).Count() != 0)
+            //{
+            //    ViewData["Message"] = $"Nie można dodać wyniku - ten zawodnik ma już wpisane wyniki w tej miejscowosci!";
+            //    return;
+            //}
 
             else
             {
                 // Jeżeli się spełnią te dwa warunki to dodaj wynik
-                var znajdzzawodnika = await dbContext.Zawodnicy.FirstOrDefaultAsync(o => o.imie_zawodnika == Zawodnik.imie_zawodnika && o.nazwisko_zawodnika == Zawodnik.nazwisko_zawodnika);
+                var znajdzzawodnika = await _context.Zawodnicy.FirstOrDefaultAsync(o => o.imie_zawodnika == Zawodnik.imie_zawodnika && o.nazwisko_zawodnika == Zawodnik.nazwisko_zawodnika);
                 //Miejscowosci miejscowosc = new Miejscowosci();
-                var znajdzmiejscowosc = await dbContext.Miejscowosci.FirstOrDefaultAsync(o => o.nazwa_miejscowosci == Miejscowosc.nazwa_miejscowosci);
+                var znajdzmiejscowosc = await _context.Miejscowosci.FirstOrDefaultAsync(o => o.nazwa_miejscowosci == Miejscowosc.nazwa_miejscowosci);
 
-
-
-                //ViewData["Message"] = $"Id miejscowosci to {miejscowosc.idmiejscowosci}.";
-
-                var zawodnik = await dbContext.Zawodnicy.FindAsync(znajdzzawodnika?.idzawodnicy);
-                var miejscowosc = await dbContext.Miejscowosci.FindAsync(znajdzmiejscowosc?.idmiejscowosci);
+                var zawodnik = await _context.Zawodnicy.FindAsync(znajdzzawodnika?.idzawodnicy);
+                var miejscowosc = await _context.Miejscowosci.FindAsync(znajdzmiejscowosc?.idmiejscowosci);
+               
                 Console.WriteLine("Znaleziony zawodnik: {0}", zawodnik?.nazwisko_zawodnika);
                 Console.WriteLine("Znaleziona Miejscowosc: {0}", miejscowosc?.nazwa_miejscowosci);
+                
                 if (zawodnik != null && miejscowosc != null)
                 {
                     var nowyWynik = new Wyniki
@@ -77,25 +89,30 @@ namespace bazy.Pages
                     };
                     Wyniki.Zawodnik = zawodnik;
                     Wyniki.Miejscowosci = miejscowosc;
-                    //Wyniki.Zawodnik.Add(zawodnik);
-                    //Wyniki.Miejscowosci.Add(miejscowosc);
-                    //Wyniki.wynik = wynik;
-                    dbContext.Wyniki.Add(Wyniki);
-                    await dbContext.SaveChangesAsync();
-                    //ViewData["Message"] = "Dodawanie wyniku";
-                    //var wyniki = new Wyniki();
-                    //wyniki.idwyniki = Wyniki.idwyniki;
-                    //wyniki.Zawodnik.imie_zawodnika = zawodnik.imie_zawodnika;
-                    //wyniki.Zawodnik.nazwisko_zawodnika = zawodnik.nazwisko_zawodnika;
-                    //wyniki.Zawodnik.kraj_pochodzenia = zawodnik.kraj_pochodzenia;
-                    //wyniki.Miejscowosci.nazwa_miejscowosci = miejscowosc.nazwa_miejscowosci;
-                    //wyniki.Miejscowosci.kraj_miejscowosci = miejscowosc.kraj_miejscowosci;
 
-                    //_context.Wyniki.Add(wyniki);
-                    //await _context.SaveChangesAsync();
-                    //ViewData["Message"] = "Pomyślnie dodano wynik dla zawodnika";
+                    _context.Wyniki.Add(Wyniki);
+                    await _context.SaveChangesAsync();
+                    
                 }
             }
+        }
+
+        private async Task LoadData()
+        {
+            WynikiZawodnicy = await _context.Wyniki
+                .Include(w => w.Zawodnik)
+                .Select(w => new Wyniki
+                {
+                    idwyniki = w.idwyniki,
+                    wynik = w.wynik,
+                    idzawodnicy = w.idzawodnicy,
+                    idmiejscowosci = w.idmiejscowosci,
+                    Miejscowosci = w.Miejscowosci,
+                    Zawodnik = w.Zawodnik
+                })
+                .ToListAsync();
+
+            ListaMiejscowosci = await _context.Miejscowosci.ToListAsync();
         }
     }
 }

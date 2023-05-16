@@ -24,6 +24,11 @@
                 <span asp-validation-for="Zawodnik.nazwisko_zawodnika" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Zawodnik.kraj_pochodzenia" class="control-label"></label>
+                <input asp-for="Zawodnik.kraj_pochodzenia" class="form-control" />
+                <span asp-validation-for="Zawodnik.kraj_pochodzenia" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Miejscowosc.nazwa_miejscowosci" class="control-label"></label>
                 <input asp-for="Miejscowosc.nazwa_miejscowosci" class="form-control" />
                 <span asp-validation-for="Miejscowosc.nazwa_miejscowosci" class="text-danger"></span>
@@ -38,8 +43,41 @@
             </div>
         </form>
     </div>
-</div>
 
+    <div class="col-md-8">
+        <h4>Wyniki</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID Wyniku</th>
+                    <th>Wynik</th>
+                    <th>ID Zawodnik</th>
+                    <th>Imię zawodnika</th>
+                    <th>Nazwisko zawodnika</th>
+                    <th>Kraj pochodzenia</th>
+                    <th>Miejscowość</th>
+                    <th>Kraj</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.WynikiZawodnicy)
+                {
+                    <tr>
+                        <td>@item.idwyniki</td>
+                        <td>@item.wynik</td>
+                        <td>@item.idzawodnicy</td>
+                        <td>@item.Zawodnik.imie_zawodnika</td>
+                        <td>@item.Zawodnik.nazwisko_zawodnika</td>
+                        <td>@item.Zawodnik.kraj_pochodzenia</td>
+                        <td>@item.Miejscowosci.nazwa_miejscowosci</td>
+                        <td>@item.Miejscowosci.kraj_miejscowosci</td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
 @if (ViewData["Message"] != null)
 {
     <div class="alert alert-info" role="alert">
@@ -50,7 +88,8 @@
 <div>
     <a asp-page="Index">Back to List</a>
 </div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
