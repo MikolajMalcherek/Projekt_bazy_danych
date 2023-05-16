@@ -10,8 +10,8 @@ using bazy.Data;
 namespace Projekt_bazy_danych.Migrations
 {
     [DbContext(typeof(ZawodnikDbContext))]
-    [Migration("20230511140601_init")]
-    partial class init
+    [Migration("20230516133609_Init2")]
+    partial class Init2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -96,13 +96,13 @@ namespace Projekt_bazy_danych.Migrations
             modelBuilder.Entity("bazy.Models.Wyniki", b =>
                 {
                     b.HasOne("bazy.Models.Miejscowosci", "Miejscowosci")
-                        .WithMany()
+                        .WithMany("Wyniki")
                         .HasForeignKey("idmiejscowosci")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("bazy.Models.Zawodnik", "Zawodnik")
-                        .WithMany()
+                        .WithMany("Wyniki")
                         .HasForeignKey("idzawodnicy")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -110,6 +110,16 @@ namespace Projekt_bazy_danych.Migrations
                     b.Navigation("Miejscowosci");
 
                     b.Navigation("Zawodnik");
+                });
+
+            modelBuilder.Entity("bazy.Models.Miejscowosci", b =>
+                {
+                    b.Navigation("Wyniki");
+                });
+
+            modelBuilder.Entity("bazy.Models.Zawodnik", b =>
+                {
+                    b.Navigation("Wyniki");
                 });
 #pragma warning restore 612, 618
         }

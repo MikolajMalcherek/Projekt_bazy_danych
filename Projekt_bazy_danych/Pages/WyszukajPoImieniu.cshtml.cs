@@ -46,5 +46,19 @@ namespace bazy.Pages
                 ViewData["Message"] = $"Nie znaleziono osoby o imieniu {Name}.";
             }
         }
+
+        public async Task<IActionResult> OnPostDeleteAsync(int id)
+        {
+            var zawodnik = await _context.Zawodnicy.FindAsync(id);
+
+            if (zawodnik != null)
+            {
+                _context.Zawodnicy.Remove(zawodnik);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToPage();
+        }
+
     }
 }

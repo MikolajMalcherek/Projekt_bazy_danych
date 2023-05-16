@@ -14,12 +14,17 @@ namespace bazy.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int idzawodnicy { get; set; }
+
+        [Required]
         public string imie_zawodnika { get; set; }
 
+        [Required]
         public string nazwisko_zawodnika { get; set; }
 
+        [Required]
         public string kraj_pochodzenia { get; set; }
 
 
+        public virtual ICollection<Wyniki> Wyniki { get; set; }
     }
 }

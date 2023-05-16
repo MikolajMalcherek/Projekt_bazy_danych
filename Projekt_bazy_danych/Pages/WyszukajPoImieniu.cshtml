@@ -30,6 +30,7 @@
             <th>Imie</th>
             <th>Nazwisko</th>
             <th>Kraj pochodzenia</th>
+            <th></th> <!-- Dodajemy nową kolumnę dla przycisków usuwania -->
         </tr>
     </thead>
     <tbody>
@@ -40,9 +41,12 @@
                 <td>@person.imie_zawodnika</td>
                 <td>@person.nazwisko_zawodnika</td>
                 <td>@person.kraj_pochodzenia</td>
+                <td>
+                    <form method="post" asp-page-handler="Delete" asp-route-id="@person.idzawodnicy">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
             </tr>
         }
     </tbody>
 </table>
-
-}
