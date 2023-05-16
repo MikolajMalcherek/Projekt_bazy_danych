@@ -1,0 +1,53 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Prostokąt z tekstem</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .rectangle {
+            width: 400px;
+            height: 200px;
+            background-color: white;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+            .rectangle p {
+                font-size: 18px;
+                text-align: center;
+                color: black; /* Dodany styl dla koloru tekstu */
+            }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <div class="rectangle">
+        <p>Wykonali:<br> Mikołaj Malcherek<br> Kuba Jankowiak</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+﻿@page
+@model bazy.Pages.WyszukajPoImieniuModel
+@{
+    ViewData["Title"] = "Search";
+}
+
+<h1>Wyszukaj zawodnika po jego imieniu</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label for="Name">Name:</label>
+        <input type="text" class="form-control" id="Name" name="Name" asp-for="Name" />
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+
+@if (ViewData["Message"] != null)
+{
+    <div class="alert alert-info" role="alert">
+        @ViewData["Message"]
+    </div>
+}
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Imie</th>
+            <th>Nazwisko</th>
+            <th>Kraj pochodzenia</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var person in Model.Zawodnicy)
+        {
+            <tr>
+                <td>@person.idzawodnicy</td>
+                <td>@person.imie_zawodnika</td>
+                <td>@person.nazwisko_zawodnika</td>
+                <td>@person.kraj_pochodzenia</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+}
