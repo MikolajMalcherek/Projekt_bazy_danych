@@ -14,22 +14,22 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Zawodnik.imie_zawodnika" class="control-label"></label>
+                <label class="control-label">Imię zawodnika</label>
                 <input asp-for="Zawodnik.imie_zawodnika" class="form-control" />
                 <span asp-validation-for="Zawodnik.imie_zawodnika" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Zawodnik.nazwisko_zawodnika" class="control-label"></label>
+                <label class="control-label">Nazwisko Zawodnika</label>
                 <input asp-for="Zawodnik.nazwisko_zawodnika" class="form-control" />
                 <span asp-validation-for="Zawodnik.nazwisko_zawodnika" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Zawodnik.kraj_pochodzenia" class="control-label"></label>
+                <label class="control-label">Kraj pochodzenia Zawodnika</label>
                 <input asp-for="Zawodnik.kraj_pochodzenia" class="form-control" />
                 <span asp-validation-for="Zawodnik.kraj_pochodzenia" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Miejscowosc.nazwa_miejscowosci" class="control-label"></label>
+                <label class="control-label">Miejscowość zawodów</label>
                 <input asp-for="Miejscowosc.nazwa_miejscowosci" class="form-control" />
                 <span asp-validation-for="Miejscowosc.nazwa_miejscowosci" class="text-danger"></span>
             </div>
@@ -71,7 +71,11 @@
                         <td>@item.Zawodnik.kraj_pochodzenia</td>
                         <td>@item.Miejscowosci.nazwa_miejscowosci</td>
                         <td>@item.Miejscowosci.kraj_miejscowosci</td>
-
+                        <td>
+                            <form method="post" asp-page-handler="Delete" asp-route-id="@item.idwyniki">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
                     </tr>
                 }
             </tbody>

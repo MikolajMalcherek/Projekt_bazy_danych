@@ -12,17 +12,17 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Zawodnik.imie_zawodnika" class="control-label"></label>
+                <label class="control-label">Imię zawodnika</label>
                 <input asp-for="Zawodnik.imie_zawodnika" class="form-control" />
                 <span asp-validation-for="Zawodnik.imie_zawodnika" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Zawodnik.nazwisko_zawodnika" class="control-label"></label>
+                <label class="control-label">Nazwisko zawodnika</label>
                 <input asp-for="Zawodnik.nazwisko_zawodnika" class="form-control" />
                 <span asp-validation-for="Zawodnik.nazwisko_zawodnika" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Zawodnik.kraj_pochodzenia" class="control-label"></label>
+                <label class="control-label">Kraj pochodzenia</label>
                 <input asp-for="Zawodnik.kraj_pochodzenia" class="form-control" />
                 <span asp-validation-for="Zawodnik.kraj_pochodzenia" class="text-danger"></span>
             </div>
@@ -33,14 +33,10 @@
     </div>
 </div>
 
-
-
-
 @if (TempData["Message"] != null)
 {
     <div class="alert alert-danger">@TempData["Message"]</div>
 }
-
 
 <div class="row justify-content-center mt-4">
     <div class="col-md-6">

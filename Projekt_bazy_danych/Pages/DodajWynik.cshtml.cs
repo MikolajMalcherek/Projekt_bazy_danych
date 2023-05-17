@@ -98,6 +98,8 @@ namespace bazy.Pages
             }
         }
 
+
+        // Dodawanie do listy Wyników nowego wyniku wraz z wszystkimi wartościami
         private async Task LoadData()
         {
             WynikiZawodnicy = await _context.Wyniki
@@ -114,6 +116,20 @@ namespace bazy.Pages
                 .ToListAsync();
 
             ListaMiejscowosci = await _context.Miejscowosci.ToListAsync();
+        }
+
+        // Metoda dla przycisków usuwających wynik z tabeli
+        public async Task<IActionResult> OnPostDeleteAsync(int id)
+        {
+            var wynik = await _context.Wyniki.FindAsync(id);
+
+            if (wynik != null)
+            {
+                _context.Wyniki.Remove(wynik);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToPage();
         }
     }
 }
