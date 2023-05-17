@@ -92,6 +92,7 @@ namespace bazy.Pages
 
                     _context.Wyniki.Add(Wyniki);
                     await _context.SaveChangesAsync();
+                    return;
                     
                 }
             }
